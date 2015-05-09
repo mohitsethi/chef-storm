@@ -1,35 +1,9 @@
-include_recipe 'storm-cluster::common'
+include_recipe "storm::default"
 
-template '/etc/init/storm-supervisor.conf' do
-  source 'storm-daemon.conf.erb'
-  mode '0644'
-  owner 'root'
-  group 'root'
-  variables(
-    :service => 'supervisor'
-  )
+bash "start_supervisor" do
+  user node[:storm][:user]
+  cwd "#{node[:storm][:data_dir]}"
+  code <<-EOH
+    #{node[:storm][:root_dir]}/apache-storm-#{node[:storm][:version]}/bin/storm supervisor >>supervisor.log 2>&1 &
+  EOH
 end
-
-service 'storm-supervisor' do
-  supports :status => true, :restart => true
-  if node['platform'] == 'ubuntu' && node['platform_version'] == '14.04'
-    then provider Chef::Provider::Service::Upstart
-  end
-  action :start
-end
-
-# script 'start_nimbus' do
-#  interpreter 'bash'
-#  user 'storm'
-#  code <<-EOL
-#    #{install_dir}/#{storm_version}/bin/storm nimbus
-#  EOL
-# end
-#
-# script 'start_ui' do
-#  interpreter 'bash'
-#  user 'storm'
-#  code <<-EOL
-#    #{install_dir}/#{storm_version}/bin/storm ui
-#  EOL
-# end
