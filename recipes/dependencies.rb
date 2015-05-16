@@ -1,19 +1,9 @@
-package 'java-1.7.0-openjdk-devel'
-package 'autoconf'
-package 'bison'
-package 'flex'
-package 'gcc'
-package 'gcc-c++'
-package 'kernel-devel'
-package 'make'
-package 'm4'
-package 'patch'
-package 'wget'
-package 'openssl-devel'
-package 'curl'
-package 'libuuid-devel'
-package 'python-devel'
-package 'unzip'
+
+include_recipe "java::oracle"
+
+node['storm']['packages'].each do |pkg|
+  package pkg
+end
 
 bash "flush iptables" do
   command "service iptables stop"

@@ -96,5 +96,24 @@ default['storm']['download_dir'] = "/apache-storm-#{node['storm']['version']}/ap
 
 
 # Default Environment & Roles 
-default['storm']['nimbus_environment'] = ''
-default['storm']['nimbus_role'] = ''
+default['storm']['storm_environment'] = 'tcom_env_nimbus'
+default['storm']['storm_nimbus_role'] = 'tcom_role_storm_nimbus'
+default['storm']['storm_supervisor_role'] = 'tcom_role_storm__supervisor'
+
+# Base packages
+default['storm']['packages'] = [
+                                'autoconf',
+                                'bison',
+                                'flex',
+                                'gcc',
+                                'gcc-c++',
+                                'kernel-devel',
+                                'make',
+                                'm4',
+                                'patch',
+                                'wget',
+                                'openssl-devel',
+                                'curl',
+                                'libuuid-devel',
+                                'python-devel',
+                                'unzip']
