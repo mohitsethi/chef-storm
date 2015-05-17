@@ -1,5 +1,25 @@
 include_recipe "storm::dependencies"
 
+# Get list of zookeeper hosts
+node.override['storm']['zookeeper']['hosts'] = partial_search(:node,
+                                                              "chef_environment:#{node.chef_environment}
+                                                              AND
+                                                              (recipe:zookeeper* OR recipe:storm::zookeeper)",
+                                                              :keys => {'ipaddress' => ['ipaddress']})
+
+node.override['storm']['nimbus']['host'] = partial_search(:node,
+                                                          "chef_environment:#{node.chef_environment}
+                                                          AND
+                                                          (role:#{node['storm']['storm_nimbus_role']})")
+
+if node['storm']['zookeeper']['hosts'].nil?
+  Chef::Application.fatal!('No Zookeeper nodes found')
+end
+
+if node['storm']['nimbus']['host'].nil?
+  Chef::Application.fatal!('No Nimbus node found')
+end
+
 storm_remote_name = "#{node['storm']['download_url']}#{node['storm']['download_dir']}"
 
 remote_file "#{Chef::Config[:file_cache_path]}/apache-storm-#{node[:storm][:version]}.tar.gz" do

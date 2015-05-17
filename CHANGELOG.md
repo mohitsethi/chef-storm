@@ -1,3 +1,6 @@
+## 1.2.27
+* Add search capability
+
 ## 1.2.6
 * Cleaned up food critic warnings
 * Made default version 0.8.2
