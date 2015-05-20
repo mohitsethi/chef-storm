@@ -1,16 +1,15 @@
 include_recipe "storm::dependencies"
+include_recipe "partial_search"
 
 # Get list of zookeeper hosts
-node.override['storm']['zookeeper']['hosts'] = partial_search(:node,
-                                                              "chef_environment:#{node.chef_environment}
-                                                              AND
-                                                              (recipe:zookeeper* OR recipe:storm::zookeeper)",
-                                                              :keys => {'ipaddress' => ['ipaddress']})
+node.override['storm']['zookeeper']['hosts'] = search(:node,
+                                                      "chef_environment:#{node.chef_environment} AND role:#{node['storm']['storm_zookeeper_role']}",
+                                                      :filter_result => {'ipaddress' => ['ipaddress']})
 
-node.override['storm']['nimbus']['host'] = partial_search(:node,
-                                                          "chef_environment:#{node.chef_environment}
-                                                          AND
-                                                          (role:#{node['storm']['storm_nimbus_role']})")
+node.override['storm']['nimbus']['host'] = search(:node,
+                                                  "chef_environment:#{node.chef_environment} AND role:#{node['storm']['storm_nimbus_role']}",
+                                                  :filter_result => {'ipaddress' => ['ipaddress']}).first
+
 
 if node['storm']['zookeeper']['hosts'].nil?
   Chef::Application.fatal!('No Zookeeper nodes found')

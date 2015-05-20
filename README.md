@@ -5,8 +5,6 @@ both the Nimbus / Web UI component and the Supervisor component.
 
 Requirements
 ============
-* Ubuntu 10.04 / 12.04
-* May function on other distributions, but has not been tested
 
 * java cookbook
 * runit cookbook

@@ -21,7 +21,7 @@ storm.local.dir: "<%= node[:storm][:data_dir] %>"
 ### zookeeper.*
 storm.zookeeper.servers:
 <% node[:storm][:zookeeper][:hosts].each do |host| -%>
-    - "<%= host %>"
+    - "<%= host[:ipaddress] %>"
 <% end -%>
 storm.zookeeper.port: <%= node[:storm][:zookeeper][:port] %>
 
@@ -41,7 +41,7 @@ supervisor.slots.ports:
 
 
 ### nimbus.* configs are for the master
-nimbus.host: "<%= node[:storm][:nimbus][:host] %>"
+nimbus.host: "<%= node[:storm][:nimbus][:host][:ipaddress] %>"
 
 
 

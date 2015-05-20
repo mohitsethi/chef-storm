@@ -87,7 +87,7 @@ default['storm']['topology']['worker_childopts'] = "null"
 
 default['zeromq']['required'] = false
 default['jzmq']['required'] = false
-default['zookeeper']['required'] = true
+default['zookeeper']['required'] = false
 
 default['storm']['version'] = '0.9.4'
 default['storm']['package'] = "apache-storm-#{node['storm']['version']}"
@@ -96,9 +96,8 @@ default['storm']['download_dir'] = "/apache-storm-#{node['storm']['version']}/ap
 
 
 # Default Environment & Roles 
-default['storm']['storm_environment'] = 'tcom_env_nimbus'
-default['storm']['storm_nimbus_role'] = 'tcom_role_storm_nimbus'
-default['storm']['storm_supervisor_role'] = 'tcom_role_storm__supervisor'
+default['storm']['storm_nimbus_role'] = ''
+default['storm']['storm_zookeeper_role'] = ''
 
 # Base packages
 default['storm']['packages'] = [
